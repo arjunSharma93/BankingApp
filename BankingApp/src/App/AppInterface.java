@@ -39,7 +39,7 @@ public class AppInterface {
 			
 			while(true) {
 				try {
-					System.out.println("Enter amount: ");
+					System.out.println("Enter amount to initiat your bank account: ");
 					amount = s.nextDouble();
 					break;
 				}catch(Exception e) {
@@ -55,7 +55,7 @@ public class AppInterface {
 			
 			while(true) {
 				try {
-					System.out.println("Enter amount: ");
+					System.out.println("Enter amount to initiat your bank account: ");
 					amount = s.nextDouble();
 					break;
 				}catch(Exception e) {
@@ -80,9 +80,9 @@ public class AppInterface {
 			while(true) {
 				try {
 					System.out.println(" for pay from wallate press 1\n for add money to wallate press 2\n"
-							+ " for wallate Check press 3\n for take credit press 4\n for pay credit press 5\n for others press 6\n for exit press 0");
+							+ " for wallate Check press 3\n for take credit press 4\n for pay credit press 5\n for others press 6\n for Wallet Transection History press 7\n for exit press 0");
 					serviceChoice = s.nextInt();
-					if(serviceChoice>=0 && serviceChoice<7) break;
+					if(serviceChoice>=0 && serviceChoice<8) break;
 					else System.out.println("enter choice correctly, try again");
 				}catch(Exception e) {
 					System.out.println("enter the correct number, try again");
@@ -97,11 +97,21 @@ public class AppInterface {
 						user.payFromWallate(fromWallate, user.getWallateAmount());
 						hdfcbankCustomer.setAmount(hdfcbankCustomer.getAmount() + fromWallate);
 						user.setWallateAmount(user.getWallateAmount() - fromWallate);
+						if(user.transactionHistory.size() == 10) {
+							user.transactionHistory.poll();
+							user.transactionHistory.add("amount paid "+fromWallate);
+						}
+						else user.transactionHistory.add("amount paid "+fromWallate);
 					}
 					else if(user.getBankName() == "IciciBank") {
 						user.payFromWallate(fromWallate, user.getWallateAmount());
 						icicibankCustomer.setAmount(icicibankCustomer.getAmount() + fromWallate);
 						user.setWallateAmount(user.getWallateAmount() - fromWallate);
+						if(user.transactionHistory.size() == 10) {
+							user.transactionHistory.poll();
+							user.transactionHistory.add("amount paid "+fromWallate);
+						}
+						else user.transactionHistory.add("amount paid "+fromWallate);
 					}
 				} catch (Exception e) {
 					System.out.println(e);
@@ -118,11 +128,21 @@ public class AppInterface {
 						user.payToWallate(toWallate, user.getWallateAmount(), hdfcbankCustomer.getAmount());
 						hdfcbankCustomer.setAmount(hdfcbankCustomer.getAmount() - toWallate);
 						user.setWallateAmount(user.getWallateAmount() + toWallate);
+						if(user.transactionHistory.size()==10) {
+							user.transactionHistory.poll();
+							user.transactionHistory.add("amount paid "+toWallate);
+						}
+						else user.transactionHistory.add("amount paid "+toWallate);
 					}
 					else if(user.getBankName() == "IciciBank") {
 						user.payToWallate(toWallate, user.getWallateAmount(), icicibankCustomer.getAmount());
 						icicibankCustomer.setAmount(icicibankCustomer.getAmount() - toWallate);
 						user.setWallateAmount(user.getWallateAmount() + toWallate);
+						if(user.transactionHistory.size()==10) {
+							user.transactionHistory.poll();
+							user.transactionHistory.add("amount paid "+toWallate);
+						}
+						else user.transactionHistory.add("amount paid "+toWallate);
 					}	
 				}catch(Exception e) {
 					System.out.println(e);
@@ -145,6 +165,11 @@ public class AppInterface {
 					user.setWallateAmount(user.getWallateAmount() + loanFromWallate);
 					user.setCreditAmount(user.getCreditAmount()+loanFromWallate);
 					user.noOfCredit = 1;
+					if(user.transactionHistory.size()==10) {
+						user.transactionHistory.poll();
+						user.transactionHistory.add("amount credit "+loanFromWallate);
+					}
+					else user.transactionHistory.add("amount credit "+loanFromWallate);
 					
 				} catch (InsuficientFundException e) {
 					System.out.println(e);
@@ -160,6 +185,11 @@ public class AppInterface {
 						user.payCredit(payCredit, user.getCreditAmount(), hdfcbankCustomer.getAmount());
 						user.setCreditAmount(user.getCreditAmount() - payCredit);
 						hdfcbankCustomer.setAmount(hdfcbankCustomer.getAmount() - payCredit);
+						if(user.transactionHistory.size()==10) {
+							user.transactionHistory.poll();
+							user.transactionHistory.add("amount paid for cerdit"+payCredit);
+						}
+						else user.transactionHistory.add("amount paid for cerdit"+payCredit);
 						if(user.getCreditAmount() == 0) {
 							user.noOfCredit = 0;
 						}
@@ -238,7 +268,9 @@ public class AppInterface {
 			}
 			}
 			
-			
+			if(serviceChoice == 7) {
+				System.out.println(user.transactionHistory);
+			}
 			
 			if(serviceChoice == 0)
 				break;	

@@ -1,5 +1,7 @@
 package App;
 
+import java.util.*;
+
 public class User extends UserService{
 	
 	private String name;
@@ -7,6 +9,8 @@ public class User extends UserService{
 	private double wallateAmount;
 	private double creditAmount;
 	public int noOfCredit;
+	
+	Queue<String> transactionHistory = new LinkedList<String>();
 	
 
 	User(String name, String BankName){
